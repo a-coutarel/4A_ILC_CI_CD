@@ -1,1 +1,10 @@
-
+name: curl_moon
+on: workflow_dispatch
+jobs:
+  curl:
+    runs-on: ubuntu-latest
+    steps:
+    - name: curl
+      uses: wei/curl@master
+      with:
+        args: wttr.in/Moon
