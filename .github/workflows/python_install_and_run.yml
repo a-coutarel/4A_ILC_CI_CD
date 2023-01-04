@@ -1,6 +1,7 @@
 name: python_install_and_run
 
-on: workflow_dispatch
+on: 
+  pull_request:
 jobs:
   build:
     runs-on: ubuntu-latest
