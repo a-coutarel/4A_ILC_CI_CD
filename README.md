@@ -21,4 +21,4 @@ Python est un langage de programmation populaire, conçu pour être lisible et f
 
 ----
 
-![Status_actions](https://github.com/a-coutarel/4A_ILC_CI_CD/actions/workflows/main.yml/badge.svg)
+![Status_actions](https://github.com/a-coutarel/4A_ILC_CI_CD/actions/workflows/echo_on_push.yml/badge.svg)
