@@ -5,19 +5,18 @@ Groupe :
 **COUTAREL Allan**    
 **DEVOUCOUX Maxime**
 
-----
 
 ## Descriptif du langage Python
 
 Python est un langage de programmation populaire, conçu pour être lisible et facile à apprendre. Il est souvent utilisé comme langage de script pour automatiser des tâches, mais peut également être utilisé pour développer des applications à grande échelle. Python est connu pour être très flexible et est utilisé dans de nombreux domaines, y compris la science des données, l'intelligence artificielle et le développement web. Il est également compatible avec de nombreux systèmes d'exploitation et peut être utilisé avec de nombreuses bibliothèques et frameworks.
 
-----
+---
 
 ## TD1
 
 Découverte et prise en main des commandes Git via les activités du site : https://learngitbranching.js.org/
 
-----
+---
 
 ## TD2
 
@@ -36,5 +35,3 @@ Découverte et prise en main des commandes Git via les activités du site : http
     - Une action qui se déclenche à chaque Pull Request avec un job utilisant actions/checkout@v3 pour accéder au code, actions/setup-python@v4 pour installer python et exécutant la commande python main.py :
         > (4A_ILC_CI_CD/.github/workflows/python_install_and_run.yml)
         >> ![Status_actions](https://github.com/a-coutarel/4A_ILC_CI_CD/actions/workflows/python_install_and_run.yml/badge.svg)
-
-----
