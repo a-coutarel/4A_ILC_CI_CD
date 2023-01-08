@@ -1,10 +1,9 @@
-# 4A_ILC_CI_CD
+# 4A_ILC_CI_CD - ESIREM
 
-COUTAREL Allan
-
-DEVOUCOUX Maxime
-
-ESIREM 4A ILC 
+Groupe :
+--------
+**COUTAREL Allan**    
+**DEVOUCOUX Maxime**
 
 ----
 
@@ -14,15 +13,28 @@ Python est un langage de programmation populaire, conçu pour être lisible et f
 
 ----
 
-## Exercice 1
-### Partie 1
+## TD1
 
-### Partie 2
+Découverte et prise en main des commandes Git via les activités du site : https://learngitbranching.js.org/
 
 ----
 
-![Status_actions](https://github.com/a-coutarel/4A_ILC_CI_CD/actions/workflows/echo_on_push.yml/badge.svg)
+## TD2
 
-![Status_actions](https://github.com/a-coutarel/4A_ILC_CI_CD/actions/workflows/curl_moon.yml/badge.svg)
+* Création et configuration du dépôt
 
-![Status_actions](https://github.com/a-coutarel/4A_ILC_CI_CD/actions/workflows/python_install_and_run.yml/badge.svg)
+* Création de diverses actions : 
+
+    - Une action qui se déclenche à chaque push pour exécuter echo "New push !"
+        >(4A_ILC_CI_CD/.github/workflows/echo_on_push.yml)
+        >> ![Status_actions](https://github.com/a-coutarel/4A_ILC_CI_CD/actions/workflows/echo_on_push.yml/badge.svg)
+
+    - Une action qui se déclenche sur commande manuel pour exécuter une commande curl sur l’adresse wttr.in/Moon
+        > (4A_ILC_CI_CD/.github/workflows/curl_moon.yml)
+        >> ![Status_actions](https://github.com/a-coutarel/4A_ILC_CI_CD/actions/workflows/curl_moon.yml/badge.svg)
+
+    - Une action qui se déclenche à chaque Pull Request avec un job utilisant actions/checkout@v3 pour accéder au code, actions/setup-python@v4 pour installer python et exécutant la commande python main.py :
+        > (4A_ILC_CI_CD/.github/workflows/python_install_and_run.yml)
+        >> ![Status_actions](https://github.com/a-coutarel/4A_ILC_CI_CD/actions/workflows/python_install_and_run.yml/badge.svg)
+
+----
