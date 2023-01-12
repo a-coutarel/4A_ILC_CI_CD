@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request
 import json
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -47,30 +48,29 @@ def do_transaction():
     if request.method == 'POST':
         data = request.get_json()
         
-        
         P1 = data['P1']
         person1 = find(P1['nom'], P1['prenom'])
         if(person1 == False):
             person1 = Person(P1['nom'], P1['prenom'], P1['solde'])
             persons.append(person1)
             
-        
         P2 = data['P2']
         person2 = find(P2['nom'], P2['prenom'])
         if(person2 == False):
             person2 = Person(P2['nom'], P2['prenom'], P2['solde'])
             persons.append(person2)
         
-        t = data['t']
+        t = datetime.strptime(data['t'], "%Y-%m-%d %H:%M:%S")
         s = data['s']
         
         person1.transaction(person2, s)
         transactions.append((person1, person2, t, s))
         transactions_json = {'P1': person1.to_json(), 'P2': person2.to_json(), 't': t, 's': s}
+        
         return jsonify(transactions_json)
 
-# curl -X POST -H "Content-Type: application/json" -d '{"P1": {"nom": "Dupont", "prenom": "Jean", "solde": 100}, "P2": {"nom": "Titou", "prenom": "Jean", "solde": 200}, "t": "12-01-2023 15:04", "s": 50}' http://localhost:5000/do-transaction
-# curl -X POST -H "Content-Type: application/json" -d '{"P1": {"nom": "Titou", "prenom": "Jean"}, "P2": {"nom": "Dupont", "prenom": "Jean"}, "t": "12-01-2023 15:04", "s": 20}' http://localhost:5000/do-transaction
+# curl -X POST -H "Content-Type: application/json" -d '{"P1": {"nom": "Dupont", "prenom": "Jean", "solde": 100}, "P2": {"nom": "Titou", "prenom": "Jean", "solde": 200}, "t": "2023-01-12 15:04:22", "s": 50}' http://localhost:5000/do-transaction
+# curl -X POST -H "Content-Type: application/json" -d '{"P1": {"nom": "Titou", "prenom": "Jean"}, "P2": {"nom": "Dupont", "prenom": "Jean"}, "t": "2023-01-12 17:10:52", "s": 20}' http://localhost:5000/do-transaction
 
 @app.route('/affiche-solde', methods=['GET'])
 def affiche_solde():
