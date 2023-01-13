@@ -57,9 +57,31 @@ def print_transactions():
 
 # curl -X "GET" http://localhost:5000/print-transactions
 
-@app.route("/do-transaction", methods=['POST'])
+
+@app.route('/print-person-transactions', methods=['GET'])
+def print_person_transactions(): 
+    if request.method == 'GET':
+        person_transactions = []
+        nom = request.form['nom']
+        prenom = request.form['prenom']
+        
+        person1 = find(nom, prenom)
+        
+        for transaction in transactions:
+            if transaction[0].nom == person1.nom and transaction[0].prenom == person1.prenom:
+                person_transactions.append(transaction)
+            elif transaction[1].nom == person1.nom and transaction[1].prenom == person1.prenom:
+                person_transactions.append(transaction)
+            
+        sorted_person_transactions = sorted(person_transactions, key=lambda transaction: transaction[2])
+        return jsonify([{'P1': person1.to_json_identity(), 'P2': person2.to_json_identity(), 't': t, 's': s} for person1, person2, t, s in sorted_person_transactions])
+
+# curl -X "GET" -d "nom=Dupont&prenom=Jean" http://localhost:5000/print-person-transactions
+
+
+@app.route("/do-transaction", methods=['PUT'])
 def do_transaction():
-    if request.method == 'POST':
+    if request.method == 'PUT':
         data = request.get_json()
         
         P1 = data['P1']
@@ -83,8 +105,8 @@ def do_transaction():
 
         return jsonify(transactions_json)
 
-# curl -X POST -H "Content-Type: application/json" -d '{"P1": {"nom": "Dupont", "prenom": "Jean", "solde": 100}, "P2": {"nom": "Titou", "prenom": "Dylan", "solde": 200}, "t": "2023-01-12 15:04:22", "s": 50}' http://localhost:5000/do-transaction
-# curl -X POST -H "Content-Type: application/json" -d '{"P1": {"nom": "Titou", "prenom": "Dylan"}, "P2": {"nom": "Dupont", "prenom": "Jean"}, "t": "2023-01-12 17:10:52", "s": 20}' http://localhost:5000/do-transaction
+# curl -X PUT -H "Content-Type: application/json" -d '{"P1": {"nom": "Dupont", "prenom": "Jean", "solde": 100}, "P2": {"nom": "Titou", "prenom": "Dylan", "solde": 200}, "t": "2023-01-12 15:04:22", "s": 50}' http://localhost:5000/do-transaction
+# curl -X PUT -H "Content-Type: application/json" -d '{"P1": {"nom": "Titou", "prenom": "Dylan"}, "P2": {"nom": "Dupont", "prenom": "Jean"}, "t": "2023-01-12 17:10:52", "s": 20}' http://localhost:5000/do-transaction
 
 @app.route('/affiche-solde', methods=['GET'])
 def affiche_solde():
