@@ -15,6 +15,9 @@ class Person:
     
     def to_json(self):
         return {'nom': self.nom, 'prenom': self.prenom, 'solde': self.solde}
+
+    def to_json_identity(self):
+        return {'nom': self.nom, 'prenom': self.prenom}
         
     def debit(self, sum):
         self.solde -= sum
@@ -39,7 +42,7 @@ def find(nom, prenom):
 @app.route('/print-transactions', methods=['GET'])
 def print_transactions():
     if request.method == 'GET':
-        return jsonify([{'P1': person1.to_json(), 'P2': person2.to_json(), 't': t, 's': s} for person1, person2, t, s in transactions])
+        return jsonify([{'P1': person1.to_json_identity(), 'P2': person2.to_json_identity(), 't': t, 's': s} for person1, person2, t, s in transactions])
 
 # curl -X "GET" http://localhost:5000/print-transactions
 
@@ -63,14 +66,14 @@ def do_transaction():
         t = datetime.strptime(data['t'], "%Y-%m-%d %H:%M:%S")
         s = data['s']
         
-        person1.transaction(person2, s)
         transactions.append((person1, person2, t, s))
         transactions_json = {'P1': person1.to_json(), 'P2': person2.to_json(), 't': t, 's': s}
-        
+        person1.transaction(person2, s)
+
         return jsonify(transactions_json)
 
-# curl -X POST -H "Content-Type: application/json" -d '{"P1": {"nom": "Dupont", "prenom": "Jean", "solde": 100}, "P2": {"nom": "Titou", "prenom": "Jean", "solde": 200}, "t": "2023-01-12 15:04:22", "s": 50}' http://localhost:5000/do-transaction
-# curl -X POST -H "Content-Type: application/json" -d '{"P1": {"nom": "Titou", "prenom": "Jean"}, "P2": {"nom": "Dupont", "prenom": "Jean"}, "t": "2023-01-12 17:10:52", "s": 20}' http://localhost:5000/do-transaction
+# curl -X POST -H "Content-Type: application/json" -d '{"P1": {"nom": "Dupont", "prenom": "Jean", "solde": 100}, "P2": {"nom": "Titou", "prenom": "Dylan", "solde": 200}, "t": "2023-01-12 15:04:22", "s": 50}' http://localhost:5000/do-transaction
+# curl -X POST -H "Content-Type: application/json" -d '{"P1": {"nom": "Titou", "prenom": "Dylan"}, "P2": {"nom": "Dupont", "prenom": "Jean"}, "t": "2023-01-12 17:10:52", "s": 20}' http://localhost:5000/do-transaction
 
 @app.route('/affiche-solde', methods=['GET'])
 def affiche_solde():
@@ -87,7 +90,6 @@ def affiche_solde():
         return jsonify("solde : " + str(solde))
 
 # curl -X "GET" -d "nom=Dupont&prenom=Jean" http://localhost:5000/affiche-solde
-
 
 if __name__ == "__main__":
 	app.run()
