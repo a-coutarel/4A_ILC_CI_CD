@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request
 import json
+import sys
 from datetime import datetime
 
 app = Flask(__name__)
@@ -38,6 +39,15 @@ def find(nom, prenom):
             return personne
     return False
 
+@app.route("/")
+def print():
+    res = "<h1>Liste des personnes :</h1><ul>"
+    for person in persons:
+        res += "<li>NOM : " + person.nom + " / PRENOM : " + person.prenom + " / SOLDE COMPTE : " + str(person.solde) + "</li>"
+    res += "</ul><h1>Liste des transactions :</h1><ul>"
+    for transaction in transactions:
+        res += "<li>P1 : " + transaction[0].nom + " " + transaction[0].prenom + " / P2 : " + transaction[1].nom + " " + transaction[1].prenom + " / DATE : " + transaction[2].strftime("%Y-%m-%d %H:%M:%S") + " / SOMME : " + str(transaction[3]) + "</li>"
+    return res+"</ul>"
 
 @app.route('/print-transactions', methods=['GET'])
 def print_transactions():
@@ -93,4 +103,10 @@ def affiche_solde():
 # curl -X "GET" -d "nom=Dupont&prenom=Jean" http://localhost:5000/affiche-solde
 
 if __name__ == "__main__":
-	app.run()
+    if len(sys.argv) > 1 :
+        if sys.argv[1] == "check_syntax":
+            print("Build [ OK ]")
+            exit(0)
+        else:
+            print("Passed argument not supported ! Supported argument : check_syntax")
+    app.run(debug=True)
