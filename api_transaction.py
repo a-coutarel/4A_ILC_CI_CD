@@ -42,7 +42,8 @@ def find(nom, prenom):
 @app.route('/print-transactions', methods=['GET'])
 def print_transactions():
     if request.method == 'GET':
-        return jsonify([{'P1': person1.to_json_identity(), 'P2': person2.to_json_identity(), 't': t, 's': s} for person1, person2, t, s in transactions])
+        sorted_transactions = sorted(transactions, key=lambda transaction: transaction[2])
+        return jsonify([{'P1': person1.to_json_identity(), 'P2': person2.to_json_identity(), 't': t, 's': s} for person1, person2, t, s in sorted_transactions])
 
 # curl -X "GET" http://localhost:5000/print-transactions
 
