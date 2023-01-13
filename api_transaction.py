@@ -1,7 +1,9 @@
 from flask import Flask, jsonify, request
+from io import BytesIO, TextIOWrapper
+from datetime import datetime
 import json
 import sys
-from datetime import datetime
+import csv
 
 app = Flask(__name__)
 
@@ -39,15 +41,34 @@ def find(nom, prenom):
             return personne
     return False
 
+
 @app.route("/")
 def print():
     res = "<h1>Liste des personnes :</h1><ul>"
     for person in persons:
-        res += "<li>NOM : " + person.nom + " / PRENOM : " + person.prenom + " / SOLDE COMPTE : " + str(person.solde) + "</li>"
+        res += "<li>NOM : " + person.nom + " / PRENOM : " + person.prenom + " / SOLDE COMPTE : " + '%.2f' % person.solde + "</li>"
     res += "</ul><h1>Liste des transactions :</h1><ul>"
     for transaction in transactions:
-        res += "<li>P1 : " + transaction[0].nom + " " + transaction[0].prenom + " / P2 : " + transaction[1].nom + " " + transaction[1].prenom + " / DATE : " + transaction[2].strftime("%Y-%m-%d %H:%M:%S") + " / SOMME : " + str(transaction[3]) + "</li>"
+        res += "<li>P1 : " + transaction[0].nom + " " + transaction[0].prenom + " / P2 : " + transaction[1].nom + " " + transaction[1].prenom + " / DATE : " + transaction[2].strftime("%Y-%m-%d %H:%M:%S") + " / SOMME : " + '%.2f' % transaction[3] + "</li>"
     return res+"</ul>"
+
+
+@app.route('/import', methods=['POST'])
+def import_data():
+    if request.method == 'POST':
+        file = request.files['file']
+        file_bytes = file.read()
+        f = BytesIO(file_bytes)
+        f = TextIOWrapper(f)
+        reader = csv.reader(f, delimiter=';')
+        
+        for row in reader:
+            persons.append(Person(row[0], row[1], float(row[2])))
+        
+        return jsonify("CSV file imported with success !")
+
+# curl -X POST -F 'file=@persons.csv' http://localhost:5000/import
+
 
 @app.route('/print-transactions', methods=['GET'])
 def print_transactions():
@@ -86,15 +107,9 @@ def do_transaction():
         
         P1 = data['P1']
         person1 = find(P1['nom'], P1['prenom'])
-        if(person1 == False):
-            person1 = Person(P1['nom'], P1['prenom'], P1['solde'])
-            persons.append(person1)
             
         P2 = data['P2']
         person2 = find(P2['nom'], P2['prenom'])
-        if(person2 == False):
-            person2 = Person(P2['nom'], P2['prenom'], P2['solde'])
-            persons.append(person2)
         
         t = datetime.strptime(data['t'], "%Y-%m-%d %H:%M:%S")
         s = data['s']
@@ -105,8 +120,8 @@ def do_transaction():
 
         return jsonify(transactions_json)
 
-# curl -X PUT -H "Content-Type: application/json" -d '{"P1": {"nom": "Dupont", "prenom": "Jean", "solde": 100}, "P2": {"nom": "Titou", "prenom": "Dylan", "solde": 200}, "t": "2023-01-12 15:04:22", "s": 50}' http://localhost:5000/do-transaction
-# curl -X PUT -H "Content-Type: application/json" -d '{"P1": {"nom": "Titou", "prenom": "Dylan"}, "P2": {"nom": "Dupont", "prenom": "Jean"}, "t": "2023-01-12 17:10:52", "s": 20}' http://localhost:5000/do-transaction
+# curl -X PUT -H "Content-Type: application/json" -d '{"P1": {"nom": "Dupont", "prenom": "Jean"}, "P2": {"nom": "Burger", "prenom": "Dylan"}, "t": "2023-01-12 15:04:22", "s": 50}' http://localhost:5000/do-transaction
+# curl -X PUT -H "Content-Type: application/json" -d '{"P1": {"nom": "Burger", "prenom": "Dylan"}, "P2": {"nom": "Dupont", "prenom": "Jean"}, "t": "2023-01-12 17:10:52", "s": 20}' http://localhost:5000/do-transaction
 
 @app.route('/affiche-solde', methods=['GET'])
 def affiche_solde():
