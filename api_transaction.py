@@ -1,7 +1,6 @@
 from flask import Flask, jsonify, request
 from io import BytesIO, TextIOWrapper
 from datetime import datetime
-import json
 import sys
 import csv
 
@@ -43,7 +42,7 @@ def find(lastname, firstname):
 
 
 @app.route("/", methods=['GET'])
-def print():
+def printAll():
     if request.method == 'GET':
         res = "<h1>Liste des personnes :</h1><ul>"
         for person in persons:
@@ -176,4 +175,5 @@ if __name__ == "__main__":
             exit(0)
         else:
             print("Passed argument not supported ! Supported argument : check_syntax")
+            exit(1)
     app.run(debug=True)
