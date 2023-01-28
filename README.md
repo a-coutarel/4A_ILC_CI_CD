@@ -14,5 +14,5 @@ L'API est réalisée en langage Python.
 
 ## Badges 
 
-[![Build App](https://github.com/a-coutarel/4A_ILC_CI_CD/actions/workflows/app_build.yml/badge.svg)](https://github.com/a-coutarel/4A_ILC_CI_CD/actions/workflows/app_build.yml)
-[![Create Docker Image](https://github.com/a-coutarel/4A_ILC_CI_CD/actions/workflows/build_image.yml/badge.svg)](https://github.com/a-coutarel/4A_ILC_CI_CD/actions/workflows/build_image.yml)
+[![Build App](https://github.com/a-coutarel/4A_ILC_CI_CD/actions/workflows/app_build.yml/badge.svg?event=status)](https://github.com/a-coutarel/4A_ILC_CI_CD/actions/workflows/app_build.yml)
+[![Create Docker Image](https://github.com/a-coutarel/4A_ILC_CI_CD/actions/workflows/build_image.yml/badge.svg?event=status)](https://github.com/a-coutarel/4A_ILC_CI_CD/actions/workflows/build_image.yml)
