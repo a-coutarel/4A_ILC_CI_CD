@@ -178,7 +178,7 @@ def print_account():
         
         if person != False:
             account = person.account
-            return "<p>Solde de " + person.lastname + " " + person.firstname + " : " + str(account) + "€</p>"
+            return "<p>Solde de " + person.lastname + " " + person.firstname + " : " + '%.2f' % account + "€</p>"
         else:
             return "Invalid request, need valid lastname and firstname"
     else:

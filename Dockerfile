@@ -17,6 +17,3 @@ EXPOSE 5000
 
 # Set the command to run when the container starts
 CMD ["flask", "run", "--host=0.0.0.0", "--port=5000"]
-
-#docker build -t api_transaction .
-#docker run -p 5000:5000 api_transaction
