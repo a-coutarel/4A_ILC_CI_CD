@@ -1,39 +1,53 @@
+# Import necessary modules from Flask, BytesIO, TextIOWrapper, datetime, sys and csv
 from flask import Flask, jsonify, request
 from io import BytesIO, TextIOWrapper
 from datetime import datetime
 import sys
 import csv
 
+# Initialize the Flask app
 app = Flask(__name__)
 
+# Create empty lists to store transactions and persons
 transactions = []
 persons = [] 
 
+
+# Define Person class
 class Person:
+    # Initialize a person with last name, first name, and account
     def __init__(self, lastname, firstname, account):
         self.lastname = lastname
         self.firstname = firstname
         self.account = account
     
+    # Create a JSON object of the person
     def to_json(self):
         return {'lastname': self.lastname, 'firstname': self.firstname, 'account': self.account}
 
+    # Create a JSON object of the person's identity
     def to_json_identity(self):
         return {'lastname': self.lastname, 'firstname': self.firstname}
         
+    # Method to debit an account
     def debit(self, sum):
         self.account -= sum
         
+    # Method to credit an account
     def credit(self, sum):
         self.account += sum
-        
+    
+    # Perform a transaction between two persons
     def transaction(self, P2, sum):
         self.debit(sum)
         P2.credit(sum)
     
+    # Check if the person's identity matches the input lastname and firstname
     def equals(self, lastname, firstname):
         return lastname == self.lastname and firstname == self.firstname
 
+
+# Function to find a person in the persons list by last name and first name
 def find(lastname, firstname):
     for person in persons:
         if(person.equals(lastname, firstname)):
@@ -41,6 +55,8 @@ def find(lastname, firstname):
     return False
 
 
+# Route to print all persons and transactions
+# Request example : http://localhost:5000/
 @app.route("/", methods=['GET'])
 def printAll():
     if request.method == 'GET':
@@ -54,8 +70,9 @@ def printAll():
     else:
         return "Invalid request method"
 
-# http://localhost:5000/
 
+# Route to import a csv file of persons
+# Request example : curl -X POST -F 'file=@persons.csv' http://localhost:5000/import
 @app.route('/import', methods=['POST'])
 def import_data():
     if request.method == 'POST':
@@ -72,9 +89,10 @@ def import_data():
     else:
         return "Invalid request method"
 
-# curl -X POST -F 'file=@persons.csv' http://localhost:5000/import
 
-
+# Route to print all transactions sorted by date
+# Request example : curl -X GET "http://localhost:5000/print-transactions"
+# In navigator : http://localhost:5000/print-transactions
 @app.route('/print-transactions', methods=['GET'])
 def print_transactions():
     if request.method == 'GET':
@@ -86,10 +104,10 @@ def print_transactions():
     else:
         return "Invalid request method"
 
-# curl -X GET "http://localhost:5000/print-transactions"
-# In navigator : http://localhost:5000/print-transactions
 
-
+# Route to print all transactions of a person, sorted by date
+# Request example : curl -X GET "http://localhost:5000/print-person-transactions?lastname=Dupont&firstname=Jean"
+# In navigator : http://localhost:5000/print-person-transactions?lastname=Dupont&firstname=Jean
 @app.route('/print-person-transactions', methods=['GET'])
 def print_person_transactions():
     if request.method == 'GET':
@@ -117,10 +135,10 @@ def print_person_transactions():
     else:
         return "Invalid request method"
 
-# curl -X GET "http://localhost:5000/print-person-transactions?lastname=Dupont&firstname=Jean"
-# In navigator : http://localhost:5000/print-person-transactions?lastname=Dupont&firstname=Jean
 
-
+# Route to perform a transaction between 2 persons
+# Request example : curl -X PUT -H "Content-Type: application/json" -d '{"P1": {"lastname": "Dupont", "firstname": "Jean"}, "P2": {"lastname": "Burger", "firstname": "Dylan"}, "t": "2023-01-12 15:04:22", "s": 50}' http://localhost:5000/do-transaction
+# curl -X PUT -H "Content-Type: application/json" -d '{"P1": {"lastname": "Burger", "firstname": "Dylan"}, "P2": {"lastname": "Dupont", "firstname": "Jean"}, "t": "2023-01-12 17:10:52", "s": 20}' http://localhost:5000/do-transaction
 @app.route("/do-transaction", methods=['PUT'])
 def do_transaction():
     if request.method == 'PUT':
@@ -146,9 +164,10 @@ def do_transaction():
     else:
         return "Invalid request method"
 
-# curl -X PUT -H "Content-Type: application/json" -d '{"P1": {"lastname": "Dupont", "firstname": "Jean"}, "P2": {"lastname": "Burger", "firstname": "Dylan"}, "t": "2023-01-12 15:04:22", "s": 50}' http://localhost:5000/do-transaction
-# curl -X PUT -H "Content-Type: application/json" -d '{"P1": {"lastname": "Burger", "firstname": "Dylan"}, "P2": {"lastname": "Dupont", "firstname": "Jean"}, "t": "2023-01-12 17:10:52", "s": 20}' http://localhost:5000/do-transaction
 
+# Route to print the account of a person
+# Request example : curl -X GET "http://localhost:5000/print-account?lastname=Dupont&firstname=Jean"
+# In navigator : http://localhost:5000/print-account?lastname=Dupont&firstname=Jean
 @app.route('/print-account', methods=['GET'])
 def print_account():
     if request.method == 'GET':
@@ -165,9 +184,8 @@ def print_account():
     else:
         return "Invalid request method"
 
-# curl -X GET "http://localhost:5000/print-account?lastname=Dupont&firstname=Jean"
-# In navigator : http://localhost:5000/print-account?lastname=Dupont&firstname=Jean
 
+# Main function that run the flask app; can also check syntax of the app with check_syntax argument
 if __name__ == "__main__":
     if len(sys.argv) > 1 :
         if sys.argv[1] == "check_syntax":
