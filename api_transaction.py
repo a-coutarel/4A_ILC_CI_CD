@@ -4,6 +4,7 @@ from io import BytesIO, TextIOWrapper
 from datetime import datetime
 import sys
 import csv
+import hashlib
 
 # Initialize the Flask app
 app = Flask(__name__)
@@ -65,7 +66,7 @@ def printAll():
             res += "<li>NOM : " + person.lastname + " / PRENOM : " + person.firstname + " / SOLDE COMPTE : " + '%.2f' % person.account + "€</li>"
         res += "</ul><h1>Liste des transactions :</h1><ul>"
         for transaction in transactions:
-            res += "<li>P1 : " + transaction[0].lastname + " " + transaction[0].firstname + " / P2 : " + transaction[1].lastname + " " + transaction[1].firstname + " / DATE : " + transaction[2].strftime("%Y-%m-%d %H:%M:%S") + " / SOMME : " + '%.2f' % transaction[3] + "€</li>"
+            res += "<li>P1 : " + transaction[0].lastname + " " + transaction[0].firstname + " / P2 : " + transaction[1].lastname + " " + transaction[1].firstname + " / DATE : " + transaction[2].strftime("%Y-%m-%d %H:%M:%S") + " / SOMME : " + '%.2f' % transaction[3] + "€ / HASH : " + transaction[4] +"</li>"
         return res+"</ul>"
     else:
         return "Invalid request method"
@@ -99,7 +100,7 @@ def print_transactions():
         sorted_transactions = sorted(transactions, key=lambda transaction: transaction[2])
         res = "<h1>Liste des transactions triées par odre chronologique :</h1><ul>"
         for transaction in sorted_transactions:
-            res += "<li>P1 : " + transaction[0].lastname + " " + transaction[0].firstname + " / P2 : " + transaction[1].lastname + " " + transaction[1].firstname + " / DATE : " + transaction[2].strftime("%Y-%m-%d %H:%M:%S") + " / SOMME : " + '%.2f' % transaction[3] + "€</li>"
+            res += "<li>P1 : " + transaction[0].lastname + " " + transaction[0].firstname + " / P2 : " + transaction[1].lastname + " " + transaction[1].firstname + " / DATE : " + transaction[2].strftime("%Y-%m-%d %H:%M:%S") + " / SOMME : " + '%.2f' % transaction[3] + "€ / HASH : " + transaction[4] +"</li>"
         return res+"</ul>"
     else:
         return "Invalid request method"
@@ -128,7 +129,7 @@ def print_person_transactions():
             sorted_person_transactions = sorted(person_transactions, key=lambda transaction: transaction[2])
             res = "<h1>Liste des transactions triées par odre chronologique liées à " + person.lastname + " " + person.firstname + " :</h1><ul>"
             for transaction in sorted_person_transactions:
-                res += "<li>P1 : " + transaction[0].lastname + " " + transaction[0].firstname + " / P2 : " + transaction[1].lastname + " " + transaction[1].firstname + " / DATE : " + transaction[2].strftime("%Y-%m-%d %H:%M:%S") + " / SOMME : " + '%.2f' % transaction[3] + "€</li>"
+                res += "<li>P1 : " + transaction[0].lastname + " " + transaction[0].firstname + " / P2 : " + transaction[1].lastname + " " + transaction[1].firstname + " / DATE : " + transaction[2].strftime("%Y-%m-%d %H:%M:%S") + " / SOMME : " + '%.2f' % transaction[3] + "€ / HASH : " + transaction[4] +"</li>"
             return res+"</ul>"
         else:
             return "Invalid request, need valid lastname and firstname"
@@ -155,8 +156,10 @@ def do_transaction():
             t = datetime.strptime(data['t'], "%Y-%m-%d %H:%M:%S")
             s = data['s']
             
-            transactions.append((person1, person2, t, s))
-            transactions_json = {'P1': person1.to_json(), 'P2': person2.to_json(), 't': t, 's': s}
+            transaction_data = (person1, person2, s)
+            h = hashlib.sha256(str(transaction_data).encode()).hexdigest()
+            transactions.append((person1, person2, t, s, h))
+            transactions_json = {'P1': person1.to_json(), 'P2': person2.to_json(), 't': t, 's': s, 'h': h}
             person1.transaction(person2, s)
             return jsonify(transactions_json)
         else:

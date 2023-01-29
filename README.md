@@ -10,7 +10,9 @@ Groupe :
 
 L'API est réalisée en langage Python.
 
-Ce projet utilise Flask pour créer une application Web qui permet de gérer des transactions bancaires. Il utilise également BytesIO, TextIOWrapper, datetime, sys, hashlib et csv pour des fonctionnalités supplémentaires. Nous avons choisi ce sujet car nous l'avons trouvé pertient pour implémenter les solutions demandées.
+Ce projet utilise Flask pour créer une application Web qui permet de gérer des transactions bancaires. Il utilise également BytesIO, TextIOWrapper, datetime, sys, hashlib et csv pour des fonctionnalités supplémentaires.
+
+Nous avons choisi ce sujet car nous l'avons trouvé pertient pour implémenter les solutions demandées.
 
 ## Fonctionnalités
 
@@ -116,6 +118,16 @@ Un objet lecteur CSV est créé avec la variable f et le délimiteur ';' est pas
 La fonction parcourt ensuite les lignes dans le fichier CSV en utilisant une boucle for et l'objet reader. Pour chaque ligne, elle crée un nouvel objet Person et l'ajoute à la liste de personnes. L'objet Person est créé en passant les valeurs de la première, deuxième et troisième colonnes de la ligne en tant que paramètres à la classe Person. La troisième colonne est passée en tant que nombre réel.
 
 Enfin, la fonction renvoie un objet JSON avec le message "CSV file imported with success !" indiquant que le fichier CSV a été importé avec succès.
+
+## Précision sur la fonction de hachage
+
+La fonction de hachage utilisée dans le code est SHA-256. Cette fonction de hachage est utilisée pour créer un jeton de hachage pour chaque transaction réalisée.
+
+SHA-256 est une fonction de hachage cryptographique qui prend une entrée de n'importe quelle taille et la convertit en une sortie fixe de 256 bits. Cela signifie qu'une fois qu'une entrée est hachée en utilisant SHA-256, elle produira toujours la même sortie de 256 bits, quelle que soit la taille de l'entrée d'origine. De plus, la fonction de hachage est une opération à sens unique, ce qui signifie qu'il est très difficile, voire impossible, de déduire l'entrée d'origine à partir de la sortie de hachage.
+
+Dans ce code, la fonction de hachage est utilisée pour créer un jeton de hachage pour chaque transaction qui est effectuée. Les données de transaction sont converties en chaîne (str(transaction_data)) et encodées en bytes (encode()). La fonction sha256() de la bibliothèque hashlib est utilisée pour créer le jeton de hachage. Enfin, la fonction hexdigest() est utilisée pour retourner le jeton de hachage sous forme de chaîne hexadécimale.
+
+Le choix de SHA-256 est un bon choix car il est considéré comme sûr et est largement utilisé dans les applications de sécurité pour créer des jetons de hachage de manière fiable.
 
 ## Badges 
 
