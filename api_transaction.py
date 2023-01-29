@@ -187,7 +187,38 @@ def print_account():
     else:
         return "Invalid request method"
 
+    
+# Route to verify the integrity of data
+# curl -X POST -H "Content-Type: application/json" -d '{"P1": {"lastname": "Burger", "firstname": "Dylan"}, "P2": {"lastname": "Dupont", "firstname": "Jean"}, "s": 20}' http://localhost:5000/verify-data
+@app.route("/verify-data", methods=['POST'])
+def verify_data():
+    if request.method == 'POST':
+        data = request.get_json()
+        
+        P1 = data['P1']
+        person1 = find(P1['lastname'], P1['firstname'])
+            
+        P2 = data['P2']
+        person2 = find(P2['lastname'], P2['firstname'])
+        
+        if person1 != False and person2 != False:
+        
+            s = data['s']
+            
+            transaction_data = (person1, person2, s)
+            h = hashlib.sha256(str(transaction_data).encode()).hexdigest()
+            
+            for transaction in transactions : 
+                if transaction[0].lastname == person1.lastname and transaction[0].firstname == person1.firstname and transaction[1].lastname == person2.lastname and transaction[1].firstname == person2.firstname and transaction[3] == s and transaction[4] == h:
+                    return "Data are valid"
+            return "Data are not valid"
+        
+        else:
+            return "Invalid request, need valid persons"
+    else:
+        return "Invalid request method"
 
+    
 # Main function that run the flask app; can also check syntax of the app with check_syntax argument
 if __name__ == "__main__":
     if len(sys.argv) > 1 :
