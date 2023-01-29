@@ -26,6 +26,7 @@ Nous avons choisi ce sujet car nous l'avons trouvé pertient pour implémenter l
 * Route pour afficher toutes les transactions liées à une personne triées par date
 * Route pour effectuer une transaction entre 2 personnes
 * Route pour afficher le solde du compte d'une personne
+* Route pour vérifier l’intégrité des données envoyées en recalculant les hashs à partir des données envoyées et en les comparant avec les hashs stockés dans l'API.
 
 ⚠️ Veuillez importer un fichier CSV de personnes avant d'utiliser d'autres routes
 
@@ -96,6 +97,12 @@ Nous avons choisi ce sujet car nous l'avons trouvé pertient pour implémenter l
     - *Avec une commande curl :*
         ```bash
         curl -X GET "http://localhost:5000/print-account?lastname=Dupont&firstname=Jean"
+        ```
+
+* Utilisez la route '/verify-data' pour vérifier l’intégrité des données envoyées.
+    - *Avec une commande curl :*
+        ```bash
+        curl -X POST -H "Content-Type: application/json" -d '{"P1": {"lastname": "Burger", "firstname": "Dylan"}, "P2": {"lastname": "Dupont", "firstname": "Jean"}, "s": 20}' http://localhost:5000/verify-data
         ```
 
 ## Précision sur l'importation d'un fichier csv
