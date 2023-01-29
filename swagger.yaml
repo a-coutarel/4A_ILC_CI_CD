@@ -1,0 +1,124 @@
+openapi: 3.0.3
+info:
+  title: Swagger COUTAREL DEVOUCOUX
+  description: |-
+
+    Ce projet utilise Flask pour créer une application Web qui permet de gérer des transactions bancaires. 
+    
+    Il utilise également BytesIO, TextIOWrapper, datetime, sys, hashlib et csv pour des fonctionnalités supplémentaires. Nous avons choisi ce sujet car nous l'avons trouvé pertient pour implémenter les solutions demandées.
+
+  version: 1.0.11
+
+servers:
+  - url: https://petstore3.swagger.io/api/v3
+
+paths:
+  /:
+    get:
+      tags:
+        - transaction
+      summary: Affiche les personnes et les transactions
+      operationId: main
+      responses:
+        '200':
+          description: Affichage des personnes et des transactions sur la page
+
+  /import:
+    post:
+      tags:
+        - transaction
+      summary: Ajoute des objets personnes grâce à fichier CSV
+      operationId: addPersonnesCsv
+      parameters:
+        - name: file
+          in: query
+          description: Nom du fichier CSV
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Retourne un fichier json
+          content:
+            application/json:
+              schema:
+                {
+                  "type": "object",
+                    "properties": {
+                      "message": {
+                        "type": "string", "example": "CSV file imported with success!"
+                    }
+                  }
+                }         
+
+  /print-transactions:
+    get:
+      tags:
+        - transaction
+      summary: Affiche l'ensemble des transactions par ordre chonologique
+      operationId: printTransactions
+      responses:
+        '200':
+          description: Affichage des transactions dans l'ordre chronologique sur la page
+
+  /print-person-transactions:
+    get:
+      tags:
+        - transaction
+      summary: Affiche les transactions relatives à une personne
+      operationId: printPersonTransactions
+      parameters:
+        - name: firstname
+          in: query
+          description: Prénom de la personne dont on veut afficher les transactions
+          schema:
+            type: string
+        - name: lastname
+          in: query
+          description: Nom de la personne dont on veut afficher les transactions
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Affichage des transactions d'une personne donnée sur la page
+
+  /do-transaction:
+    put:
+      tags:
+        - transaction
+      summary: Action permettant de réaliser une transaction entre 2 personnes
+      operationId: doTransaction
+      parameters:
+        - name: P1
+          in: query
+          description: Objet personne 1 de la transaction
+          schema:
+            type: object
+        - name: P2
+          in: query
+          description: Objet personne 2 de la transaction
+          schema:
+            type: object
+      responses:
+        200:
+          description: Ajout de la transaction dans la liste
+          
+  /print-account:
+    get:
+      tags:
+        - transaction
+      summary: Affiche le compte d'une personne
+      operationId: printAccount
+      parameters:
+        - name: firstname
+          in: query
+          description: Prénom de la personne dont on veut afficher le compte
+          schema:
+            type: string
+        - name: lastname
+          in: query
+          description: Nom de la personne dont on veut afficher le compte
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Affichage du compte d'une personne donnée sur la page
