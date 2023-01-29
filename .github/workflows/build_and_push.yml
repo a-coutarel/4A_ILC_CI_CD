@@ -33,7 +33,7 @@ jobs:
         with:
           # Emplacement du Dockerfile
           file: ./Dockerfile
-          tags: gcr.io/esirem/4A_ILC/Coutarel_Devoucoux/4A_ILC_CI_CD:${{ github.ref_name }}
+          tags: gcr.io/esirem/4a_ilc/coutarel_devoucoux/4a_ilc_ci_cd:${{ github.ref_name }}
           # Emplacement des fichiers 
           context: .
           push: true
