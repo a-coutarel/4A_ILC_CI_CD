@@ -91,6 +91,35 @@ def import_data():
         return "Invalid request method"
 
 
+# Route to add a person
+# Request example : curl -X POST -H "Content-Type: application/json" -d '{"P": {"lastname": "Delarue", "firstname": "Marc", "account": 700}}' http://localhost:5000/add-person
+@app.route('/add-person', methods=['POST'])
+def add_person():
+    if request.method == 'POST':
+        data = request.get_json()
+        P = data['P']
+        persons.append(Person(P['lastname'], P['firstname'], P['account']))
+        return jsonify("Person added with success !")
+    else:
+        return "Invalid request method"
+
+
+# Route to delete a person
+# Request example : curl -X DELETE -H "Content-Type: application/json" -d '{"P": {"lastname": "Coutarel", "firstname": "Allan", "account": 800}}' http://localhost:5000/delete-person
+@app.route('/delete-person', methods=['DELETE'])
+def delete_person():
+    if request.method == 'DELETE':
+        data = request.get_json()
+        P = data['P']
+        for idx, person in enumerate(persons):
+            if person.lastname == P['lastname'] and person.firstname == P['firstname'] and person.account == P['account']:
+                persons.pop(idx)
+                return jsonify("Person deleted with success !")
+        return jsonify("Person not found !")
+    else:
+        return "Invalid request method"
+
+
 # Route to print all transactions sorted by date
 # Request example : curl -X GET "http://localhost:5000/print-transactions"
 # In navigator : http://localhost:5000/print-transactions

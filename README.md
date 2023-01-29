@@ -27,8 +27,11 @@ Nous avons choisi ce sujet car nous l'avons trouvé pertient pour implémenter l
 * Route pour effectuer une transaction entre 2 personnes
 * Route pour afficher le solde du compte d'une personne
 * Route pour vérifier l’intégrité des données envoyées en recalculant les hashs à partir des données envoyées et en les comparant avec les hashs stockés dans l'API.
+* Route pour ajouter une personne
+* Route pour supprimer une personne
 
 ⚠️ Veuillez importer un fichier CSV de personnes avant d'utiliser d'autres routes
+*Note : Depuis la version v2.2.0, il est possible d'ajouter ou de supprimer une personne avec des routes. Quand une personne est supprimée, toutes les transactions liées à cette personne restent.*
 
 ## Utilisation
 
@@ -103,6 +106,18 @@ Nous avons choisi ce sujet car nous l'avons trouvé pertient pour implémenter l
     - *Avec une commande curl :*
         ```bash
         curl -X POST -H "Content-Type: application/json" -d '{"P1": {"lastname": "Burger", "firstname": "Dylan"}, "P2": {"lastname": "Dupont", "firstname": "Jean"}, "t": "2023-01-12 17:10:52", "s": 20}' http://localhost:5000/verify-data
+        ```
+
+* Utilisez la route '/add-person' pour ajouter une personne à la liste des personnes.
+    - *Avec une commande curl :*
+        ```bash
+        curl -X POST -H "Content-Type: application/json" -d '{"P": {"lastname": "Delarue", "firstname": "Marc", "account": 700}}' http://localhost:5000/add-person
+        ```
+
+* Utilisez la route '/delete-person' pour supprimer une personne de la liste des personnes.
+    - *Avec une commande curl :*
+        ```bash
+        curl -X DELETE -H "Content-Type: application/json" -d '{"P": {"lastname": "Coutarel", "firstname": "Allan", "account": 800}}' http://localhost:5000/delete-person
         ```
 
 ## Précision sur l'importation d'un fichier csv
