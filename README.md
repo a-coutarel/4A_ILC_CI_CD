@@ -102,7 +102,7 @@ Nous avons choisi ce sujet car nous l'avons trouvé pertient pour implémenter l
 * Utilisez la route '/verify-data' pour vérifier l’intégrité des données envoyées.
     - *Avec une commande curl :*
         ```bash
-        curl -X POST -H "Content-Type: application/json" -d '{"P1": {"lastname": "Burger", "firstname": "Dylan"}, "P2": {"lastname": "Dupont", "firstname": "Jean"}, "s": 20}' http://localhost:5000/verify-data
+        curl -X POST -H "Content-Type: application/json" -d '{"P1": {"lastname": "Burger", "firstname": "Dylan"}, "P2": {"lastname": "Dupont", "firstname": "Jean"}, "t": "2023-01-12 17:10:52", "s": 20}' http://localhost:5000/verify-data
         ```
 
 ## Précision sur l'importation d'un fichier csv

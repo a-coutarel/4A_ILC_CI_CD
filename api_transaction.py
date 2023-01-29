@@ -156,7 +156,7 @@ def do_transaction():
             t = datetime.strptime(data['t'], "%Y-%m-%d %H:%M:%S")
             s = data['s']
             
-            transaction_data = (person1, person2, s)
+            transaction_data = (person1, person2, t, s)
             h = hashlib.sha256(str(transaction_data).encode()).hexdigest()
             transactions.append((person1, person2, t, s, h))
             transactions_json = {'P1': person1.to_json(), 'P2': person2.to_json(), 't': t, 's': s, 'h': h}
@@ -189,7 +189,7 @@ def print_account():
 
     
 # Route to verify the integrity of data
-# curl -X POST -H "Content-Type: application/json" -d '{"P1": {"lastname": "Burger", "firstname": "Dylan"}, "P2": {"lastname": "Dupont", "firstname": "Jean"}, "s": 20}' http://localhost:5000/verify-data
+# curl -X POST -H "Content-Type: application/json" -d '{"P1": {"lastname": "Burger", "firstname": "Dylan"}, "P2": {"lastname": "Dupont", "firstname": "Jean"}, "t": "2023-01-12 17:10:52", "s": 20}' http://localhost:5000/verify-data
 @app.route("/verify-data", methods=['POST'])
 def verify_data():
     if request.method == 'POST':
@@ -197,15 +197,16 @@ def verify_data():
         
         P1 = data['P1']
         person1 = find(P1['lastname'], P1['firstname'])
-            
+        
         P2 = data['P2']
         person2 = find(P2['lastname'], P2['firstname'])
         
         if person1 != False and person2 != False:
         
+            t = datetime.strptime(data['t'], "%Y-%m-%d %H:%M:%S")
             s = data['s']
             
-            transaction_data = (person1, person2, s)
+            transaction_data = (person1, person2, t, s)
             h = hashlib.sha256(str(transaction_data).encode()).hexdigest()
             
             for transaction in transactions : 
