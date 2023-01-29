@@ -10,7 +10,7 @@ Groupe :
 
 L'API est réalisée en langage Python.
 
-Ce projet utilise Flask pour créer une application Web qui permet de gérer des transactions bancaires. Il utilise également BytesIO, TextIOWrapper, datetime, sys, hashlib et csv pour des fonctionnalités supplémentaires.
+Ce projet utilise Flask pour créer une application Web qui permet de gérer des transactions bancaires. Il utilise également BytesIO, TextIOWrapper, datetime, sys, hashlib et csv pour des fonctionnalités supplémentaires. Nous avons choisi ce sujet car nous l'avons trouvé pertient pour implémenter les solutions demandées.
 
 ## Fonctionnalités
 
