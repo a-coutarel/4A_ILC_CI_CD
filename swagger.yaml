@@ -48,7 +48,63 @@ paths:
                         "type": "string", "example": "CSV file imported with success!"
                     }
                   }
-                }         
+                }
+  
+  /add-person:
+    post:
+      tags:
+        - transaction
+      summary: Ajoute un objet Personne
+      operationId: addPersonne
+      parameters:
+        - name: P
+          in: query
+          description: Objet personne à ajouter 
+          schema:
+            type: object
+      responses:
+        '200':
+          description: Retourne un fichier json
+          content:
+            application/json:
+              schema:
+                {
+                  "type": "object",
+                    "properties": {
+                      "message": {
+                        "type": "string", "example": "Person added with success !"
+                    }
+                  }
+                }  
+  
+  
+  /delete-person:
+    post:
+      tags:
+        - transaction
+      summary: Supprime un objet Personne
+      operationId: deletePersonne
+      parameters:
+        - name: P
+          in: query
+          description: Objet personne à supprimer 
+          schema:
+            type: object
+      responses:
+        '200':
+          description: Retourne un fichier json
+          content:
+            application/json:
+              schema:
+                {
+                  "type": "object",
+                    "properties": {
+                      "message": {
+                        "type": "string", "example": "Person deleted with success !"
+                    }
+                  }
+                } 
+  
 
   /print-transactions:
     get:
@@ -122,3 +178,30 @@ paths:
       responses:
         '200':
           description: Affichage du compte d'une personne donnée sur la page
+          
+          
+  /verify-data:
+      post:
+        tags:
+          - transaction
+        summary: Vérifie les données des transactions entre 2 personnes
+        operationId: verifyData
+        parameters:
+          - name: P1
+            in: query
+            description: Objet personne 
+            schema:
+              type: object
+          - name: P2
+            in: query
+            description: Objet personne
+            schema:
+              type: object
+          - name: date
+            in: query
+            description : Date de la transaction
+            schema:
+              type: string
+        responses:
+          '200':
+            description: Message indiquant que les données sont valides
