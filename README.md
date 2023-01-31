@@ -30,7 +30,8 @@ Nous avons choisi ce sujet car nous l'avons trouvé pertient pour implémenter l
 * Route pour ajouter une personne
 * Route pour supprimer une personne
 
-⚠️ Veuillez importer un fichier CSV de personnes avant d'utiliser d'autres routes
+⚠️ Veuillez importer un fichier CSV de personnes avant d'utiliser d'autres routes : si les personnes n'existent pas, il est impossible d'effectuer des transactions. Il faut d'abord importer des personnes pour effectuer des transactions entre elles.
+
 *Note : Depuis la version v2.2.0, il est possible d'ajouter ou de supprimer une personne avec des routes. Quand une personne est supprimée, toutes les transactions liées à cette personne restent.*
 
 ## Utilisation

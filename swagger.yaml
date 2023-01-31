@@ -4,14 +4,11 @@ info:
   description: |-
 
     Ce projet utilise Flask pour créer une application Web qui permet de gérer des transactions bancaires. 
-    
+
     Il utilise également BytesIO, TextIOWrapper, datetime, sys, hashlib et csv pour des fonctionnalités supplémentaires. Nous avons choisi ce sujet car nous l'avons trouvé pertient pour implémenter les solutions demandées.
-
   version: 1.0.11
-
 servers:
   - url: https://petstore3.swagger.io/api/v3
-
 paths:
   /:
     get:
@@ -22,7 +19,6 @@ paths:
       responses:
         '200':
           description: Affichage des personnes et des transactions sur la page
-
   /import:
     post:
       tags:
@@ -41,15 +37,11 @@ paths:
           content:
             application/json:
               schema:
-                {
-                  "type": "object",
-                    "properties": {
-                      "message": {
-                        "type": "string", "example": "CSV file imported with success!"
-                    }
-                  }
-                }
-  
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: CSV file imported with success!
   /add-person:
     post:
       tags:
@@ -59,27 +51,35 @@ paths:
       parameters:
         - name: P
           in: query
-          description: Objet personne à ajouter 
+          description: Objet personne à ajouter
           schema:
             type: object
+            properties:
+              P:
+                type: object
+                properties:
+                    lastname:
+                      type: string
+                      example: Coutarel
+                    firstname:
+                      type: string
+                      example: Allan
+                    account:
+                      type : number
+                      example : 800
       responses:
         '200':
           description: Retourne un fichier json
           content:
             application/json:
               schema:
-                {
-                  "type": "object",
-                    "properties": {
-                      "message": {
-                        "type": "string", "example": "Person added with success !"
-                    }
-                  }
-                }  
-  
-  
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Person added with success !
   /delete-person:
-    post:
+    delete:
       tags:
         - transaction
       summary: Supprime un objet Personne
@@ -87,25 +87,33 @@ paths:
       parameters:
         - name: P
           in: query
-          description: Objet personne à supprimer 
+          description: Objet personne à supprimer
           schema:
             type: object
+            properties:
+              P:
+                type: object
+                properties:
+                    lastname:
+                      type: string
+                      example: Coutarel
+                    firstname:
+                      type: string
+                      example: Allan
+                    account:
+                      type : number
+                      example : 800
       responses:
         '200':
           description: Retourne un fichier json
           content:
             application/json:
               schema:
-                {
-                  "type": "object",
-                    "properties": {
-                      "message": {
-                        "type": "string", "example": "Person deleted with success !"
-                    }
-                  }
-                } 
-  
-
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Person deleted with success !
   /print-transactions:
     get:
       tags:
@@ -115,7 +123,6 @@ paths:
       responses:
         '200':
           description: Affichage des transactions dans l'ordre chronologique sur la page
-
   /print-person-transactions:
     get:
       tags:
@@ -136,7 +143,6 @@ paths:
       responses:
         '200':
           description: Affichage des transactions d'une personne donnée sur la page
-
   /do-transaction:
     put:
       tags:
@@ -144,20 +150,39 @@ paths:
       summary: Action permettant de réaliser une transaction entre 2 personnes
       operationId: doTransaction
       parameters:
-        - name: P1
+        - name: Parameter
           in: query
-          description: Objet personne 1 de la transaction
+          description: Paramètre pour effectuer une transaction
           schema:
             type: object
-        - name: P2
-          in: query
-          description: Objet personne 2 de la transaction
-          schema:
-            type: object
+            properties:
+              P1:
+                type: object
+                properties:
+                    lastname:
+                      type: string
+                      example: Coutarel
+                    firstname:
+                      type: string
+                      example: Allan
+              P2:
+                type: object
+                properties:
+                    lastname:
+                      type: string
+                      example: Devoucoux
+                    firstname:
+                      type: string
+                      example: Maxime
+              t:
+                type: string
+                example: 2023-01-12 15:04:22
+              s:
+                type: number
+                example: 50
       responses:
-        200:
+        '200':
           description: Ajout de la transaction dans la liste
-          
   /print-account:
     get:
       tags:
@@ -178,30 +203,43 @@ paths:
       responses:
         '200':
           description: Affichage du compte d'une personne donnée sur la page
-          
-          
   /verify-data:
-      post:
-        tags:
-          - transaction
-        summary: Vérifie les données des transactions entre 2 personnes
-        operationId: verifyData
-        parameters:
-          - name: P1
-            in: query
-            description: Objet personne 
-            schema:
-              type: object
-          - name: P2
-            in: query
-            description: Objet personne
-            schema:
-              type: object
-          - name: date
-            in: query
-            description : Date de la transaction
-            schema:
-              type: string
-        responses:
-          '200':
-            description: Message indiquant que les données sont valides
+    post:
+      tags:
+        - transaction
+      summary: Vérifie les données des transactions entre 2 personnes
+      operationId: verifyData
+      parameters:
+        - name: Parameter
+          in: query
+          description: Paramètre pour vérifier l'intégrité des données
+          schema:
+            type: object
+            properties:
+              P1:
+                type: object
+                properties:
+                    lastname:
+                      type: string
+                      example: Coutarel
+                    firstname:
+                      type: string
+                      example: Allan
+              P2:
+                type: object
+                properties:
+                    lastname:
+                      type: string
+                      example: Devoucoux
+                    firstname:
+                      type: string
+                      example: Maxime
+              t:
+                type: string
+                example: 2023-01-12 15:04:22
+              s:
+                type: number
+                example: 50
+      responses:
+        '200':
+          description: Message indiquant que les données sont valides
