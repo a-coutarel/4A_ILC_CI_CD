@@ -155,3 +155,5 @@ Le choix de SHA-256 est un bon choix car il est considéré comme sûr et est la
 ## Badges 
 
 ![Status_actions](https://github.com/a-coutarel/4A_ILC_CI_CD/actions/workflows/app_build.yml/badge.svg) ![Status_actions](https://github.com/a-coutarel/4A_ILC_CI_CD/actions/workflows/build_image.yml/badge.svg) ![Status_actions](https://github.com/a-coutarel/4A_ILC_CI_CD/actions/workflows/build_and_push.yml/badge.svg)
+
+[![](https://img.shields.io/badge/PROJET_TERMINÉ_🚀-059142?style=for-the-badge&logoColor=white)](https://dev.to/envoy_/150-badges-for-github-pnk)
